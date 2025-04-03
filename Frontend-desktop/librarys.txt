@@ -3,3 +3,4 @@ pillow
 opencv-python 
 numpy
 PyQt6
+mysql-connector-python
