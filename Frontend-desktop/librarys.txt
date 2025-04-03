@@ -1,0 +1,4 @@
+pytq6 
+pillow 
+opencv-python 
+numpy
