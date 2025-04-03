@@ -1,5 +1,5 @@
 import sys, sqlite3
-from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox
+from PyQt6.QtWidgets import QApplication, QDialog, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox
 from PyQt6.QtCore import Qt, QFile, QTextStream
 #from database import verificar_usuario
 
@@ -7,7 +7,7 @@ from PyQt6.QtCore import Qt, QFile, QTextStream
 #def conectar_bd():
 #    return sqlite3.connect("sistema.db")
 
-class Login(QWidget):
+class Login(QDialog):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Login - Sistema Circulatorio")
@@ -44,9 +44,10 @@ class Login(QWidget):
 
         if usuario == "admin" and contraseña == "1234":
             QMessageBox.information(self, "Éxito", "Inicio de sesión exitoso")
-            self.close()
+            self.accept()
         else:
             QMessageBox.warning(self, "Error", "Usuario o contraseña incorrectos")
+            self.reject()
      
        
     # Verificar si un usuario existe
