@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import QApplication,QMainWindow, QLabel, QVBoxLayout, QWidg
 from PyQt6.QtGui import QFont
 from PyQt6.QtCore import Qt, QFile, QTextStream
 from app.about import About
+from app.record import Record
 
 class Home(QMainWindow):
     def __init__(self):
@@ -24,7 +25,10 @@ class Home(QMainWindow):
         
         menu_layout = QHBoxLayout()
         btn_pacientes = QPushButton("Pacientes")
+
         btn_historial = QPushButton("Historial")
+        btn_historial.clicked.connect(self.show_record)
+
         btn_acerca_de = QPushButton("Acerca de")
         btn_acerca_de.clicked.connect(self.show_about)
 
@@ -58,6 +62,10 @@ class Home(QMainWindow):
         self.about_window = About()
         self.about_window.show()
         
+    def show_record(self):
+        self.record_window = Record()
+        self.record_window.show()
+
 if __name__ =="__main___":
     app = QApplication(sys.argv)
     ventana = Home()

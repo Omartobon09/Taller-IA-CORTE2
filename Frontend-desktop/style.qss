@@ -20,6 +20,7 @@ QLineEdit {
     border-radius: 5px;
     padding: 8px;
     font-size: 14px;
+    color: black;
 }
 
 QPushButton {
@@ -32,4 +33,20 @@ QPushButton {
 
 QPushButton:hover {
     background-color: #1565C0;
+}
+
+#paciente_selector {
+    color: black;  
+    font-size: 14px;
+    border: 2px solid #0D47A1;
+    padding: 8px;
+}
+
+#paciente_selector QAbstractItemView {
+    color: black;
+}
+
+#historial_texto {
+    color: black; 
+    font-size: 14px;
 }
