@@ -46,7 +46,7 @@ QPushButton:hover {
     color: black;
 }
 
-#historial_texto {
+#historial_texto, QTextEdit {
     color: black; 
     font-size: 14px;
 }
