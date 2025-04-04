@@ -2,7 +2,7 @@ import sys
 from PyQt6.QtWidgets import QApplication,QMainWindow, QLabel, QVBoxLayout, QWidget, QPushButton, QHBoxLayout
 from PyQt6.QtGui import QFont
 from PyQt6.QtCore import Qt, QFile, QTextStream
-
+from app.about import About
 
 class Home(QMainWindow):
     def __init__(self):
@@ -26,6 +26,7 @@ class Home(QMainWindow):
         btn_pacientes = QPushButton("Pacientes")
         btn_historial = QPushButton("Historial")
         btn_acerca_de = QPushButton("Acerca de")
+        btn_acerca_de.clicked.connect(self.show_about)
 
         menu_layout.addWidget(btn_pacientes)
         menu_layout.addWidget(btn_historial)
@@ -53,6 +54,9 @@ class Home(QMainWindow):
         screen = QApplication.primaryScreen().geometry()
         self.move((screen.width() - self.width()) // 2, (screen.height() - self.height()) // 2)
         
+    def show_about(self):
+        self.about_window = About()
+        self.about_window.show()
         
 if __name__ =="__main___":
     app = QApplication(sys.argv)
