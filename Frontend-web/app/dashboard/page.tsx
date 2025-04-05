@@ -19,22 +19,22 @@ export default function DashboardPage() {
           <h3>Principales enfermedades del sistema circulatorio:</h3>
           <ul>
             <li>
-              <strong>Hipertensión arterial:</strong> presión elevada de forma
+              <strong>Hipertensión arterial:</strong> Presión elevada de forma
               continua.
             </li>
             <li>
-              <strong>Infarto al miocardio:</strong> bloqueo del flujo sanguíneo
+              <strong>Infarto al miocardio:</strong> Bloqueo del flujo sanguíneo
               al corazón.
             </li>
             <li>
-              <strong>Insuficiencia cardíaca:</strong> el corazón no bombea
+              <strong>Insuficiencia cardíaca:</strong> El corazón no bombea
               sangre eficientemente.
             </li>
             <li>
-              <strong>Arritmias:</strong> latidos irregulares del corazón.
+              <strong>Arritmias:</strong> Latidos irregulares del corazón.
             </li>
             <li>
-              <strong>Arteriosclerosis:</strong> endurecimiento de arterias por
+              <strong>Arteriosclerosis:</strong> Endurecimiento de arterias por
               placas de grasa.
             </li>
           </ul>
