@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import styles from '../login/login.module.css';
+import styles from '../style.module.css';
 
 export default function RegistrationPage() {
   const [cedula, setCedula] = useState('');
