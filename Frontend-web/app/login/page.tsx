@@ -60,7 +60,7 @@ export default function LoginPage() {
         <h2>Iniciar sesión</h2>
         <p>Ingresa tu <b>usuario</b> y <b>contraseña</b> para poder ingresar al sistema</p>
         <form onSubmit={handleLogin}>
-          <div>
+          <div className={styles['container-label']}>
             <label className={styles['login-subtitles']}>Usuario:</label><br />
             <input className={styles['login-subtitles']}
               type="text"
@@ -69,7 +69,7 @@ export default function LoginPage() {
               required
             />
           </div>
-          <div>
+          <div className={styles['container-label']}>
             <label className={styles['login-subtitles']}>Contraseña:</label><br />
             <input className={styles['login-subtitles']}
               type="password"

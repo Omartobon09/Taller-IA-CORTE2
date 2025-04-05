@@ -1,3 +1,14 @@
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container-registration {
+  margin: 10% 0;
+}
+
 .login-container,
 .container-box {
   position: relative;
@@ -48,6 +59,7 @@
   font-weight: bold;
   transition: background-color 0.3s ease;
   margin: 5px 0;
+  border-radius: 20px;
 }
 
 .login-container button:hover,
@@ -55,12 +67,16 @@
   background-color: #0059c1;
 }
 
+.container-label {
+  margin: 2rem 0;
+}
+
 .home-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; 
+  min-height: 100vh;
   width: 100%;
   padding: 2rem;
 }
