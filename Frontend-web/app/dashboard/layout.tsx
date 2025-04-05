@@ -6,9 +6,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <div>
       <nav className={styles.navbar}>
         <Link href="/dashboard">Inicio</Link>
-        <Link href="/dashboard/information">Información</Link>
         <Link href="/dashboard/quotes">Citas</Link>
         <Link href="/dashboard/history">Historial</Link>
+        <Link href="/login">Cerrar sesión</Link>
       </nav>
       {children}
     </div>

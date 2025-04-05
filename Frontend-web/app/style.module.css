@@ -109,3 +109,18 @@
   color: #0070f3;
   text-decoration: underline;
 }
+
+
+.appointment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.appointment-form select,
+.appointment-form input[type="date"] {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}

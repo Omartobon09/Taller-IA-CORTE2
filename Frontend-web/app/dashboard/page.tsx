@@ -44,12 +44,7 @@ export default function DashboardPage() {
           <p>
             <strong>Selecciona una opción del menú:</strong>
           </p>
-
-          <Link href="/dashboard/information">
-            <button className={styles["login-button"]}>
-              Información médica
-            </button>
-          </Link>
+          
           <br />
           <Link href="/dashboard/quotes">
             <button className={styles["login-button"]}>Reservar Cita</button>
