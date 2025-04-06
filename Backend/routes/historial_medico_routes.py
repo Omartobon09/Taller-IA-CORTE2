@@ -1,34 +1,46 @@
-from fastapi import APIRouter, Path
+from fastapi import APIRouter, HTTPException
+from controllers.historial_medico_controller import historial_medico_controller
 from models.historial_medico_model import HistorialMedico
-from controllers.historial_medico_controller import HistorialMedicoController
+from datetime import date
 
 router = APIRouter()
-historial_medico_controller = HistorialMedicoController()
 
-@router.get("/historiales")
-def obtener_historiales():
+# ✅ Traer todos los historiales médicos
+@router.get("/get/historiales")
+async def get_historiales():
     return historial_medico_controller.get_historiales()
 
-@router.get("/historiales/{id}")
-def obtener_historial_por_id(id: int):
+# ✅ Traer historial por ID
+@router.get("/get/historiales/{id}")
+async def get_historial_id(id: int):
     return historial_medico_controller.get_historial_id(id)
 
-@router.get("/historiales/paciente/{paciente_id}")
-def obtener_historiales_por_paciente(paciente_id: int):
-    return historial_medico_controller.get_historiales_by_paciente(paciente_id)
+# ✅ Traer historiales por paciente
+@router.get("/get/historiales/paciente/{paciente_id}")
+async def get_historial_paciente(paciente_id: int):
+    return historial_medico_controller.get_historial_paciente(paciente_id)
 
-@router.get("/historiales/medico/{medico_id}")
-def obtener_historiales_por_medico(medico_id: int):
-    return historial_medico_controller.get_historiales_by_medico(medico_id)
+# ✅ Traer historiales por médico
+@router.get("/get/historiales/medico/{medico_id}")
+async def get_historial_medico_doctor(medico_id: int):
+    return historial_medico_controller.get_historial_medico_doctor(medico_id)
 
-@router.post("/historiales")
-def crear_historial(nuevo_historial: HistorialMedico):
+# ✅ Traer historiales por rango de fechas
+@router.get("/get/historiales/fechas/{fecha_inicio}/{fecha_fin}")
+async def get_historial_fecha_rango(fecha_inicio: date, fecha_fin: date):
+    return historial_medico_controller.get_historial_fecha_rango(fecha_inicio, fecha_fin)
+
+# ✅ Registrar nuevo historial médico
+@router.post("/post/historiales")
+async def post_historial(nuevo_historial: HistorialMedico):
     return historial_medico_controller.post_historial(nuevo_historial)
 
-@router.put("/historiales/{id}")
-def actualizar_historial(id: int, historial_actualizado: HistorialMedico):
+# ✅ Actualizar un historial médico
+@router.put("/update/historiales/{id}")
+async def update_historial(id: int, historial_actualizado: HistorialMedico):
     return historial_medico_controller.update_historial(id, historial_actualizado)
 
-@router.delete("/historiales/{id}")
-def eliminar_historial(id: int):
+# ✅ Eliminar un historial médico
+@router.delete("/delete/historiales/{id}")
+async def delete_historial(id: int):
     return historial_medico_controller.delete_historial(id)

@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from datetime import date, time
 
 
-class Citas(BaseModel):
+class Cita(BaseModel):
     paciente_id: int
     medico_id: int
     fecha: date

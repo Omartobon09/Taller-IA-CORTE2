@@ -8,7 +8,7 @@ export default function RegistrationPage() {
   const [cedula, setCedula] = useState("");
   const [telefono, setTelefono] = useState("");
   const [correo, setCorreo] = useState("");
-  const [usuario, setUsuario] = useState("");
+  const [nombre, setNombre] = useState("");
   const [password, setPassword] = useState("");
 
   const handleRegister = (e: React.FormEvent) => {
@@ -18,7 +18,7 @@ export default function RegistrationPage() {
       cedula,
       telefono,
       correo,
-      usuario,
+      nombre,
       password,
     };
 
@@ -47,6 +47,39 @@ export default function RegistrationPage() {
           <p>Completa los campos para crear una cuenta</p>
           <form onSubmit={handleRegister}>
             <div className={styles["container-label"]}>
+              <label className={styles["login-subtitles"]}>Nombre:</label>
+              <br />
+              <input
+                className={styles["login-subtitles"]}
+                type="text"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles["container-label"]}>
+              <label className={styles["login-subtitles"]}>Correo:</label>
+              <br />
+              <input
+                className={styles["login-subtitles"]}
+                type="email"
+                value={correo}
+                onChange={(e) => setCorreo(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles["container-label"]}>
+              <label className={styles["login-subtitles"]}>Contraseña:</label>
+              <br />
+              <input
+                className={styles["login-subtitles"]}
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles["container-label"]}>
               <label className={styles["login-subtitles"]}>Cédula:</label>
               <br />
               <input
@@ -65,39 +98,6 @@ export default function RegistrationPage() {
                 type="tel"
                 value={telefono}
                 onChange={(e) => setTelefono(e.target.value)}
-                required
-              />
-            </div>
-            <div className={styles["container-label"]}>
-              <label className={styles["login-subtitles"]}>Correo:</label>
-              <br />
-              <input
-                className={styles["login-subtitles"]}
-                type="email"
-                value={correo}
-                onChange={(e) => setCorreo(e.target.value)}
-                required
-              />
-            </div>
-            <div className={styles["container-label"]}>
-              <label className={styles["login-subtitles"]}>Usuario:</label>
-              <br />
-              <input
-                className={styles["login-subtitles"]}
-                type="text"
-                value={usuario}
-                onChange={(e) => setUsuario(e.target.value)}
-                required
-              />
-            </div>
-            <div className={styles["container-label"]}>
-              <label className={styles["login-subtitles"]}>Contraseña:</label>
-              <br />
-              <input
-                className={styles["login-subtitles"]}
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>

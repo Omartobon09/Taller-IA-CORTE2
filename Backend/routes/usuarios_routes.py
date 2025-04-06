@@ -1,37 +1,36 @@
-from fastapi import APIRouter, Path
-from models.usuarios_model import Usuarios
-from controllers.usuarios_controller import UsuariosController
+from fastapi import APIRouter, HTTPException
+from controllers.usuarios_controller import usuarios_controller
+from models.usuarios_model import Usuario
 
 router = APIRouter()
 
-usuarios_controller = UsuariosController()
-
-
-@router.get("/usuarios")
-def obtener_usuarios():
+# ✅ Traer todos los usuarios
+@router.get("/get/usuarios")
+async def get_usuarios():
     return usuarios_controller.get_usuarios()
 
-
-@router.get("/usuarios/{id}")
-def obtener_usuario_por_id(id: int = Path(..., description="ID del usuario")):
+# ✅ Traer usuario por ID
+@router.get("/get/usuarios/{id}")
+async def get_usuario_id(id: int):
     return usuarios_controller.get_usuario_id(id)
 
+# ✅ Traer médicos (usuarios con rol_id = 2)
+@router.get("/get/medicos")
+async def get_medicos():
+    return usuarios_controller.get_medicos()
 
-@router.get("/usuarios/rol/{rol_id}")
-def obtener_usuarios_por_rol(rol_id: int):
-    return usuarios_controller.get_usuarios_by_rol(rol_id)
 
-
-@router.post("/usuarios")
-def crear_usuario(nuevo_usuario: Usuarios):
+# ✅ Registrar nuevo usuario
+@router.post("/post/usuarios")
+async def post_usuario(nuevo_usuario: Usuario):
     return usuarios_controller.post_usuario(nuevo_usuario)
 
-
-@router.put("/usuarios/{id}")
-def actualizar_usuario(id: int, usuario_actualizado: Usuarios):
+# ✅ Actualizar un usuario
+@router.put("/update/usuarios/{id}")
+async def update_usuario(id: int, usuario_actualizado: Usuario):
     return usuarios_controller.update_usuario(id, usuario_actualizado)
 
-
-@router.delete("/usuarios/{id}")
-def eliminar_usuario(id: int):
+# ✅ Eliminar un usuario
+@router.delete("/delete/usuarios/{id}")
+async def delete_usuario(id: int):
     return usuarios_controller.delete_usuario(id)

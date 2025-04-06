@@ -3,8 +3,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.citas_routes import router as citas_router
 from routes.historial_medico_routes import router as historial_medico_router
-from routes.medicos_routes import router as medicos_router
-from routes.pacientes_routes import router as pacientes_router
 from routes.usuarios_routes import router as usuarios_router
 from routes.auth_routes import router as auth_router
 app = FastAPI()
@@ -25,8 +23,6 @@ app.add_middleware(
 )
 app.include_router(citas_router)
 app.include_router(historial_medico_router)
-app.include_router(medicos_router)
-app.include_router(pacientes_router)
 app.include_router(usuarios_router)
 app.include_router(auth_router)
 
