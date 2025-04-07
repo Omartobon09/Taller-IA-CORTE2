@@ -8,49 +8,41 @@ import styles from '../style.module.css';
 export default function LoginPage() {
   const router = useRouter();
 
-  // Datos locales
-  const [users] = useState([
-    { user: 'admin', password: '123456' },
-    { user: 'nicolas', password: 'abc123' }
-  ]);
-
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validación local
-    const foundUser = users.find(
-      u => u.user === user && u.password === password
-    );
-
-    if (foundUser) {
-      alert('Inicio de sesión exitoso');
-      router.push('/dashboard');
-    } else {
-      alert('Usuario o contraseña incorrectos');
-    }
-
-    // API
-
-    /*
     try {
-      const res = await fetch('http://localhost:3000/api/login', {
+      const formData = new URLSearchParams();
+      formData.append('username', user);
+      formData.append('password', password);
+
+      const res = await fetch('http://localhost:8000/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user, password }),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData.toString(),
       });
 
-      if (!res.ok) throw new Error('Credenciales incorrectas');
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.detail || 'Credenciales incorrectas');
+      }
 
       const data = await res.json();
-      console.log('Token recibido:', data.token);
+      console.log('Token recibido:', data.access_token);
+
+      // Puedes guardar el token en localStorage si quieres usarlo luego
+      localStorage.setItem('token', data.access_token);
+
+      alert('Inicio de sesión exitoso');
       router.push('/dashboard');
-    } catch (err) {
+    } catch (err: any) {
       alert('Error al iniciar sesión: ' + err.message);
     }
-    */
   };
 
   return (
@@ -62,7 +54,8 @@ export default function LoginPage() {
         <form onSubmit={handleLogin}>
           <div className={styles['container-label']}>
             <label className={styles['login-subtitles']}>Usuario:</label><br />
-            <input className={styles['login-subtitles']}
+            <input
+              className={styles['login-subtitles']}
               type="text"
               value={user}
               onChange={e => setUser(e.target.value)}
@@ -71,18 +64,19 @@ export default function LoginPage() {
           </div>
           <div className={styles['container-label']}>
             <label className={styles['login-subtitles']}>Contraseña:</label><br />
-            <input className={styles['login-subtitles']}
+            <input
+              className={styles['login-subtitles']}
               type="password"
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
             />
           </div>
-          <button type="submit">
-            Iniciar sesión
-          </button>
+          <button type="submit">Iniciar sesión</button>
         </form>
-        <p style={{marginTop: '1rem'}}>¿No tienes cuenta? <Link href="/registration"><b>Regístrate</b></Link></p>
+        <p style={{ marginTop: '1rem' }}>
+          ¿No tienes cuenta? <Link href="/registration"><b>Regístrate</b></Link>
+        </p>
       </div>
     </div>
   );

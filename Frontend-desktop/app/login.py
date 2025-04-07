@@ -1,20 +1,20 @@
-import sys, sqlite3
-from PyQt6.QtWidgets import QApplication, QDialog, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox
+import sys
+import requests
+from PyQt6.QtWidgets import (
+    QApplication, QDialog, QLabel, QLineEdit,
+    QPushButton, QVBoxLayout, QMessageBox
+)
 from PyQt6.QtCore import Qt, QFile, QTextStream
-#from database import verificar_usuario
 
-# Conectar a la base de datos
-#def conectar_bd():
-#    return sqlite3.connect("sistema.db")
 
 class Login(QDialog):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Login - Sistema Circulatorio")
         self.setGeometry(0, 0, 400, 300)
-        self.setFixedSize(400,300)
+        self.setFixedSize(400, 300)
         self.center_window()
-        
+
         self.load_styles("style.qss")
 
         layout = QVBoxLayout()
@@ -42,34 +42,37 @@ class Login(QDialog):
         usuario = self.input_user.text()
         contraseña = self.input_pass.text()
 
-        if usuario == "admin" and contraseña == "1234":
-            QMessageBox.information(self, "Éxito", "Inicio de sesión exitoso")
-            self.accept()
-        else:
-            QMessageBox.warning(self, "Error", "Usuario o contraseña incorrectos")
-            self.reject()
-     
-       
-    # Verificar si un usuario existe
-    #def verificar_usuario(usuario, contraseña):
-    #    conn = conectar_bd()
-    #    cursor = conn.cursor()
-    #
-    #   cursor.execute("SELECT * FROM usuarios WHERE usuario = ? AND contraseña = ?", (usuario, contraseña))
-    #   resultado = cursor.fetchone()
+        try:
+            response = requests.post(
+                "http://localhost:8000/login",  # Cambia si tu backend está en otro host o puerto
+                data={"username": usuario, "password": contraseña},
+                headers={"Content-Type": "application/x-www-form-urlencoded"}
+            )
 
-    #   conn.close()
-    #   return resultado is not None
-    
+            if response.status_code == 200:
+                token = response.json().get("access_token")
+                # Aquí puedes guardar el token si lo necesitas para futuras consultas
+                QMessageBox.information(
+                    self, "Éxito", "Inicio de sesión exitoso")
+                self.accept()
+            else:
+                QMessageBox.warning(
+                    self, "Error", "Usuario o contraseña incorrectos")
+
+        except requests.exceptions.RequestException as e:
+            QMessageBox.critical(self, "Error de red",
+                                 f"No se pudo conectar al servidor:\n{str(e)}")
+
     def load_styles(self, filename):
         file = QFile(filename)
         if file.open(QFile.OpenModeFlag.ReadOnly | QFile.OpenModeFlag.Text):
             stream = QTextStream(file)
             self.setStyleSheet(stream.readAll())
-    
+
     def center_window(self):
         screen = QApplication.primaryScreen().geometry()
-        self.move((screen.width() - self.width()) // 2, (screen.height() - self.height()) // 2)
+        self.move((screen.width() - self.width()) // 2,
+                  (screen.height() - self.height()) // 2)
 
 
 if __name__ == "__main__":
