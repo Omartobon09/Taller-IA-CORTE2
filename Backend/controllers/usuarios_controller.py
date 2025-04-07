@@ -70,7 +70,7 @@ class UsuariosController:
             conn = get_db_connection()
             cursor = conn.cursor()
             # Asumiendo que el rol_id = 2 es para médicos
-            cursor.execute("SELECT * FROM usuarios WHERE rol_id = 2")
+            cursor.execute("SELECT * FROM usuarios WHERE rol_id = 1")
             result = cursor.fetchall()
             payload = []
             content = {}

@@ -33,10 +33,29 @@ export default function LoginPage() {
       }
 
       const data = await res.json();
-      console.log('Token recibido:', data.access_token);
+      const token = data.access_token;
+      console.log('Token recibido:', token);
 
-      // Puedes guardar el token en localStorage si quieres usarlo luego
-      localStorage.setItem('token', data.access_token);
+      // Guardar el token en localStorage
+      localStorage.setItem('token', token);
+
+      // Obtener los datos del usuario
+      const userRes = await fetch('http://localhost:8000/usuario', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!userRes.ok) {
+        throw new Error('No se pudo obtener la información del usuario');
+      }
+
+      const userData = await userRes.json();
+      console.log('Usuario logueado:', userData);
+
+      // Guardar el ID del usuario en localStorage
+      localStorage.setItem('user_id', userData.id);
 
       alert('Inicio de sesión exitoso');
       router.push('/dashboard');
