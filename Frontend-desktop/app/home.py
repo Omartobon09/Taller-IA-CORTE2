@@ -6,17 +6,20 @@ from app.about import About
 from app.record import Record
 from app.patient import Patient
 
+
 class Home(QMainWindow):
-    def __init__(self):
+    def __init__(self, token=None, medico_id=None):
         super().__init__()
-        
+        self.token = token
+        self.medico_id = medico_id
+
         self.setWindowTitle("Sistema Circulatorio - Módulo Principal")
         self.setGeometry(100, 100, 800, 600)
-        self.setFixedSize(800, 600) 
+        self.setFixedSize(800, 600)
         self.center_window()
-        
+
         self.load_styles("style.qss")
-        
+
         layout = QVBoxLayout()
 
         title = QLabel("Sistema Circulatorio - CUL")
@@ -25,8 +28,9 @@ class Home(QMainWindow):
         layout.addWidget(title)
 
         self.image_label = QLabel()
-        pixmap = QPixmap("assets/circulatory_system.jpg")  
-        self.image_label.setPixmap(pixmap.scaled(400, 300, Qt.AspectRatioMode.KeepAspectRatio))
+        pixmap = QPixmap("assets/circulatory_system.jpg")
+        self.image_label.setPixmap(pixmap.scaled(
+            400, 300, Qt.AspectRatioMode.KeepAspectRatio))
         self.image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.image_label)
 
@@ -53,39 +57,42 @@ class Home(QMainWindow):
         menu_layout.addWidget(btn_pacientes)
         menu_layout.addWidget(btn_historial)
         menu_layout.addWidget(btn_acerca_de)
-        
+
         layout.addLayout(menu_layout)
-        
+
         central_widget = QWidget()
         central_widget.setLayout(layout)
         self.setCentralWidget(central_widget)
-        
+
     def load_styles(self, filename):
         file = QFile(filename)
         if file.open(QFile.OpenModeFlag.ReadOnly | QFile.OpenModeFlag.Text):
             stream = QTextStream(file)
             self.setStyleSheet(stream.readAll())
-            
+
     def center_window(self):
         screen = QApplication.primaryScreen().geometry()
-        self.move((screen.width() - self.width()) // 2, (screen.height() - self.height()) // 2)
-        
+        self.move((screen.width() - self.width()) // 2,
+                  (screen.height() - self.height()) // 2)
+
     def show_about(self):
         self.about_window = About()
         self.about_window.show()
-        
+
     def show_record(self):
-        self.record_window = Record()
+        # Modificado para pasar token y medico_id
+        self.record_window = Record(token=self.token, medico_id=self.medico_id)
         self.record_window.show()
-        
+
     def show_patient(self):
-        self.patient_window = Patient() 
+        # Modificado para pasar token y medico_id
+        self.patient_window = Patient(
+            token=self.token, medico_id=self.medico_id)
         self.patient_window.show()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     ventana = Home()
     ventana.show()
     sys.exit(app.exec())
-
-    

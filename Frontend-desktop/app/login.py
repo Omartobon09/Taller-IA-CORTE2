@@ -15,6 +15,9 @@ class Login(QDialog):
         self.setFixedSize(400, 300)
         self.center_window()
 
+        self.token = None
+        self.user_id = None
+
         self.load_styles("style.qss")
 
         layout = QVBoxLayout()
@@ -44,17 +47,29 @@ class Login(QDialog):
 
         try:
             response = requests.post(
-                "http://localhost:8000/login",  # Cambia si tu backend está en otro host o puerto
+                "http://127.0.0.1:8000/login",
                 data={"username": usuario, "password": contraseña},
                 headers={"Content-Type": "application/x-www-form-urlencoded"}
             )
 
             if response.status_code == 200:
-                token = response.json().get("access_token")
-                # Aquí puedes guardar el token si lo necesitas para futuras consultas
-                QMessageBox.information(
-                    self, "Éxito", "Inicio de sesión exitoso")
-                self.accept()
+                self.token = response.json().get("access_token")
+
+                # Hacer la petición para obtener los datos del usuario logueado
+                user_response = requests.get(
+                    "http://127.0.0.1:8000/usuario",
+                    headers={"Authorization": f"Bearer {self.token}"}
+                )
+
+                if user_response.status_code == 200:
+                    self.user_id = user_response.json().get("id")
+                    QMessageBox.information(
+                        self, "Éxito", f"Bienvenido")
+                    self.accept()
+                else:
+                    QMessageBox.warning(
+                        self, "Error", "No se pudo obtener el ID del médico")
+
             else:
                 QMessageBox.warning(
                     self, "Error", "Usuario o contraseña incorrectos")
@@ -73,10 +88,3 @@ class Login(QDialog):
         screen = QApplication.primaryScreen().geometry()
         self.move((screen.width() - self.width()) // 2,
                   (screen.height() - self.height()) // 2)
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    ventana = Login()
-    ventana.show()
-    sys.exit(app.exec())

@@ -65,6 +65,32 @@ class UsuariosController:
         except Exception as error:
             return {"resultado": str(error)}
 
+    def get_usuario_por_documento(self, documento):
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                "SELECT * FROM usuarios WHERE documento = %s", (documento,))
+            result = cursor.fetchone()
+            if result:
+                usuario = {
+                    'id': result[0],
+                    'nombre': result[1],
+                    'email': result[2],
+                    # No se devuelve la contraseña por seguridad
+                    'documento': result[4],
+                    'telefono': result[5],
+                    'fecha_nacimiento': result[6],
+                    'rol_id': result[7],
+                    'especialidad': result[8],
+                    'creado_en': result[9]
+                }
+                return {"resultado": usuario}
+            else:
+                return {"resultado": "Usuario no encontrado"}
+        except Exception as error:
+            return {"resultado": str(error)}
+
     def get_medicos(self):
         try:
             conn = get_db_connection()
@@ -121,7 +147,7 @@ class UsuariosController:
             INSERT INTO usuarios 
             (nombre, email, password, documento, telefono, fecha_nacimiento, rol_id, especialidad, creado_en) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """, (nombre, email,password, documento, telefono, fecha_nacimiento, rol_id, especialidad, creado_en))
+            """, (nombre, email, password, documento, telefono, fecha_nacimiento, rol_id, especialidad, creado_en))
 
         conn.commit()
         conn.close()
