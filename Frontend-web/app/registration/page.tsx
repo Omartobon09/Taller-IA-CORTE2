@@ -10,33 +10,41 @@ export default function RegistrationPage() {
   const [correo, setCorreo] = useState("");
   const [nombre, setNombre] = useState("");
   const [password, setPassword] = useState("");
+  const [fechaNacimiento, setFechaNacimiento] = useState("");
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const newUser = {
-      cedula,
-      telefono,
-      correo,
+    const nuevoUsuario = {
       nombre,
+      email: correo,
       password,
+      documento: cedula,
+      telefono,
+      fecha_nacimiento: new Date(fechaNacimiento).toISOString(),
+      rol_id: 2,
+      especialidad: "",
+      creado_en: new Date().toISOString(),
     };
 
-    console.log("Usuario registrado localmente:", newUser);
+    try {
+      const res = await fetch("http://127.0.0.1:8000/post/usuarios", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(nuevoUsuario),
+      });
 
-    // API
-    /*
-    fetch('/api/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newUser)
-    })
-      .then(res => res.json())
-      .then(data => console.log('Respuesta del backend:', data))
-      .catch(error => console.error('Error al registrar:', error));
-    */
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.detail || "Error en el registro");
+      }
+
+      alert("Registro exitoso. Ahora puedes iniciar sesión.");
+    } catch (error: any) {
+      alert("Error al registrar: " + error.message);
+    }
   };
 
   return (
@@ -98,6 +106,19 @@ export default function RegistrationPage() {
                 type="tel"
                 value={telefono}
                 onChange={(e) => setTelefono(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles["container-label"]}>
+              <label className={styles["login-subtitles"]}>
+                Fecha de nacimiento:
+              </label>
+              <br />
+              <input
+                className={styles["login-subtitles"]}
+                type="date"
+                value={fechaNacimiento}
+                onChange={(e) => setFechaNacimiento(e.target.value)}
                 required
               />
             </div>

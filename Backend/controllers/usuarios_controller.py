@@ -109,9 +109,7 @@ class UsuariosController:
 
         nombre = nuevo_usuario.nombre
         email = nuevo_usuario.email
-        # Encriptar contraseña
-        hashed_password = hashlib.sha256(
-            nuevo_usuario.password.encode()).hexdigest()
+        password = nuevo_usuario.password
         documento = nuevo_usuario.documento
         telefono = nuevo_usuario.telefono
         fecha_nacimiento = nuevo_usuario.fecha_nacimiento
@@ -123,7 +121,7 @@ class UsuariosController:
             INSERT INTO usuarios 
             (nombre, email, password, documento, telefono, fecha_nacimiento, rol_id, especialidad, creado_en) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """, (nombre, email, hashed_password, documento, telefono, fecha_nacimiento, rol_id, especialidad, creado_en))
+            """, (nombre, email,password, documento, telefono, fecha_nacimiento, rol_id, especialidad, creado_en))
 
         conn.commit()
         conn.close()
