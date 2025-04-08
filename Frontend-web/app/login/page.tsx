@@ -4,12 +4,15 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styles from '../style.module.css';
+import AlertPopup from '../components/alertPopup';
 
 export default function LoginPage() {
   const router = useRouter();
 
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
+  const [alert, setAlert] = useState<{ message: string; type?: 'success' | 'error' } | null>(null);
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,10 +61,17 @@ export default function LoginPage() {
       localStorage.setItem('user_id', userData.id);
       localStorage.setItem('user_name', userData.nombre)
 
-      alert('Inicio de sesión exitoso');
-      router.push('/dashboard');
+      setAlert({ message: 'Inicio de sesión exitoso', type: 'success' });
+
+      setTimeout(() => {
+        setAlert(null);
+        router.push('/dashboard');
+      }, 2000);
     } catch (err: any) {
-      alert('Error al iniciar sesión: ' + err.message);
+  
+      setAlert({ message: 'Error al iniciar sesión: ' + err.message, type: 'error' });
+  
+      setTimeout(() => setAlert(null), 3000);
     }
   };
 
