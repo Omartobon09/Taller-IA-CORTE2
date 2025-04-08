@@ -56,6 +56,7 @@ export default function LoginPage() {
 
       // Guardar el ID del usuario en localStorage
       localStorage.setItem('user_id', userData.id);
+      localStorage.setItem('user_name', userData.nombre)
 
       alert('Inicio de sesión exitoso');
       router.push('/dashboard');
