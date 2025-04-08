@@ -231,7 +231,7 @@ export default function QuotesPage() {
             reservedAppointments.map((appt, idx) => (
               <li key={idx}>
                 {getDoctorNameById(appt.medico_id)} - {appt.fecha} a las{" "}
-                {formatTime(appt.hora)} ({appt.estado})
+                {formatTime(appt.hora)} 
               </li>
             ))
           )}
