@@ -1,52 +1,291 @@
+/* Estilos Generales */
 QWidget {
-    background-color: #E3F2FD;
+    background-color: #F5F9FF;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+/* Estilos para los botones de enfermedades */
+#disease_button {
+    text-align: left;
+    padding: 8px;
+    margin: 3px;
+    background-color: #3498db;
+    border: 1px solid #add8e6;
+    border-radius: 5px;
+    font-size: 14px;
 }
 
-QLabel {
-    font-size: 16px;
-    font-weight: bold;
-    color: #0D47A1;
+
+/* Estilos para el diálogo de información */
+QDialog {
+    background-color: #f7f9fb;
 }
 
-QLabel#title {
-    font-size: 20px;
+QTextEdit {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    font-size: 14px;
+}
+
+QDialog QPushButton {
+    padding: 8px 16px;
+    background-color: #3498db;
+    color: white;
+    border-radius: 4px;
     font-weight: bold;
-    color: #222;
+}
+
+QDialog QPushButton:hover {
+    background-color: #2980b9;
+}
+/* Estilos específicos para la ventana de Login */
+Login {
+    background-color: #F5F9FF;
+}
+
+/* Contenedor principal para centrar contenido del login */
+Login QVBoxLayout {
+    margin: 20px;
+    padding: 20px;
+}
+
+/* Título del Login */
+Login QLabel#login_title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1A5276;
+    padding: 10px;
+    margin-bottom: 20px;
     text-align: center;
 }
 
+/* Etiquetas de usuario y contraseña */
+Login QLabel {
+    font-size: 14px;
+    font-weight: bold;
+    color: #2874A6;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+/* Campos de texto para login */
+Login QLineEdit {
+    border: 2px solid #3498DB;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 14px;
+    color: #2C3E50;
+    background-color: rgba(255, 255, 255, 0.9);
+    selection-background-color: #AED6F1;
+    margin-bottom: 15px;
+    min-height: 20px;
+}
+
+Login QLineEdit:focus {
+    border-color: #2E86C1;
+    background-color: #FFFFFF;
+    border-width: 2px;
+}
+
+/* Botón de inicio de sesión */
+Login QPushButton#btn_login {
+    background-color: #2E86C1;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 6px;
+    padding: 12px;
+    margin-top: 20px;
+    min-width: 150px;
+    min-height: 40px;
+}
+
+Login QPushButton#btn_login:hover {
+    background-color: #3498DB;
+    border: 1px solid #1A5276;
+}
+
+Login QPushButton#btn_login:pressed {
+    background-color: #1A5276;
+}
+
+/* Mensajes de error o alerta en el login */
+Login QMessageBox {
+    background-color: #F5F9FF;
+}
+
+Login QMessageBox QLabel {
+    font-size: 14px;
+    color: #2C3E50;
+}
+
+Login QMessageBox QPushButton {
+    min-width: 80px;
+    padding: 8px;
+}
+
+/* Estilos generales que se mantienen para el resto de la aplicación */
+QLabel#title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #1A5276;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #2E86C1;
+}
+
+QLabel {
+    font-size: 14px;
+    font-weight: bold;
+    color: #2874A6;
+    margin-top: 5px;
+}
+
+QLabel#content {
+    font-size: 14px;
+    color: #34495E;
+    line-height: 1.5;
+    margin: 10px;
+}
+
 QLineEdit {
-    border: 2px solid #0D47A1;
-    border-radius: 5px;
+    border: 2px solid #3498DB;
+    border-radius: 6px;
     padding: 8px;
     font-size: 14px;
-    color: black;
+    color: #2C3E50;
+    background-color: #FFFFFF;
+    selection-background-color: #AED6F1;
+}
+
+QLineEdit:focus {
+    border-color: #2E86C1;
+    background-color: #EBF5FB;
+}
+
+QLineEdit:disabled {
+    background-color: #EAECEE;
+    border-color: #B3B6B7;
+    color: #7F8C8D;
+}
+
+QLineEdit::placeholder {
+    color: #AEB6BF;
+}
+
+QTextEdit {
+    border: 2px solid #3498DB;
+    border-radius: 6px;
+    padding: 8px;
+    font-size: 14px;
+    color: #2C3E50;
+    background-color: #FFFFFF;
+    selection-background-color: #AED6F1;
+}
+
+QTextEdit:focus {
+    border-color: #2E86C1;
+    background-color: #EBF5FB;
+}
+
+QTextEdit:read-only {
+    background-color: #F8F9F9;
 }
 
 QPushButton {
-    background-color: #0D47A1;
+    background-color: #2E86C1;
     color: white;
     font-size: 14px;
-    border-radius: 5px;
-    padding: 8px;
+    font-weight: bold;
+    border-radius: 6px;
+    padding: 10px 15px;
+    min-width: 100px;
 }
 
 QPushButton:hover {
-    background-color: #1565C0;
+    background-color: #3498DB;
 }
 
-#paciente_selector {
-    color: black;  
-    font-size: 14px;
-    border: 2px solid #0D47A1;
+QPushButton:pressed {
+    background-color: #1A5276;
+}
+
+QPushButton:disabled {
+    background-color: #85C1E9;
+    color: #D6EAF8;
+}
+
+QComboBox {
+    border: 2px solid #3498DB;
+    border-radius: 6px;
     padding: 8px;
+    min-width: 6em;
+    background-color: #FFFFFF;
+    color: #2C3E50;
 }
 
-#paciente_selector QAbstractItemView {
-    color: black;
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+    border-left-width: 1px;
+    border-left-color: #3498DB;
+    border-left-style: solid;
 }
 
-#historial_texto, QTextEdit {
-    color: black; 
+QComboBox:hover {
+    border-color: #2E86C1;
+}
+
+QComboBox QAbstractItemView {
+    border: 2px solid #3498DB;
+    background-color: #FFFFFF;
+    selection-background-color: #AED6F1;
+}
+
+QMessageBox {
+    background-color: #F5F9FF;
+}
+
+QMessageBox QLabel {
     font-size: 14px;
+    color: #2C3E50;
+}
+
+QMessageBox QPushButton {
+    min-width: 80px;
+    padding: 6px 12px;
+}
+
+QLabel[objectName="image_label"] {
+    border: 2px dashed #3498DB;
+    background-color: #FFFFFF;
+}
+
+QDialog {
+    background-color: #F5F9FF;
+}
+
+QTextEdit#historial_texto {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #34495E;
+    line-height: 1.6;
+    padding: 10px;
+}
+
+.patient-info-section {
+    background-color: #EBF5FB;
+    border-radius: 6px;
+    padding: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+QToolTip {
+    background-color: #F5F9FF;
+    color: #2C3E50;
+    border: 1px solid #3498DB;
+    border-radius: 4px;
+    padding: 4px;
+    font-size: 12px;
 }

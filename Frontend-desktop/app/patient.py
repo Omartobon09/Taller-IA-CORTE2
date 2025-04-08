@@ -27,12 +27,18 @@ class Patient(QWidget):
 
         # Cargar modelo YOLOv8
         self.yolo_model = YOLO("yolov8n.pt")
-        
+
         # Variable para almacenar el ID del paciente actual
         self.paciente_id = None
 
         self.load_styles("style.qss")
         self.init_ui()
+
+    def load_styles(self, filename):
+        file = QFile(filename)
+        if file.open(QFile.OpenModeFlag.ReadOnly | QFile.OpenModeFlag.Text):
+            stream = QTextStream(file)
+            self.setStyleSheet(stream.readAll())
 
     def init_ui(self):
         layout = QVBoxLayout()
@@ -103,50 +109,41 @@ class Patient(QWidget):
 
             if isinstance(resultado, dict):
                 self.name_display.setText(resultado.get("nombre", ""))
-                # Guardar el ID del paciente para usarlo al guardar el historial
                 self.paciente_id = resultado.get("id")
-                QMessageBox.information(
-                    self, "Paciente encontrado", "Datos cargados correctamente.")
+                QMessageBox.information(self, "Paciente encontrado", "Datos cargados correctamente.")
             else:
-                QMessageBox.warning(self, "No encontrado",
-                                    "Paciente no encontrado.")
+                QMessageBox.warning(self, "No encontrado", "Paciente no encontrado.")
                 self.name_display.clear()
                 self.paciente_id = None
 
         except Exception as e:
-            QMessageBox.critical(
-                self, "Error", f"No se pudo conectar a la API.\n{e}")
+            QMessageBox.critical(self, "Error", f"No se pudo conectar a la API.\n{e}")
 
     def save_data(self):
         if not self.token or not self.medico_id:
-            QMessageBox.warning(
-                self, "Error", "No hay sesión activa. Por favor, inicie sesión nuevamente.")
+            QMessageBox.warning(self, "Error", "No hay sesión activa. Por favor, inicie sesión nuevamente.")
             return
-            
+
         if not self.paciente_id:
-            QMessageBox.warning(
-                self, "Error", "Debe buscar un paciente válido primero.")
+            QMessageBox.warning(self, "Error", "Debe buscar un paciente válido primero.")
             return
-            
+
         doc = self.doc_input.text().strip()
         diagnosis = self.diagnosis_text.toPlainText().strip()
         recommendation = self.recommendation_text.toPlainText().strip()
         nombre = self.name_display.text().strip()
 
         if not doc or not diagnosis or not recommendation or not nombre:
-            QMessageBox.warning(
-                self, "Error", "Todos los campos son obligatorios.")
+            QMessageBox.warning(self, "Error", "Todos los campos son obligatorios.")
             return
 
-        # Guardar en base de datos local
         pacientes_db[doc] = {
             "nombre": nombre,
             "diagnostico": diagnosis,
             "recomendacion": recommendation,
             "imagen": pacientes_db.get(doc, {}).get("imagen", None)
         }
-        
-        # Preparar datos para enviar a la API
+
         historial_data = {
             "paciente_id": self.paciente_id,
             "medico_id": self.medico_id,
@@ -154,27 +151,27 @@ class Patient(QWidget):
             "recomendaciones": recommendation,
             "fecha": datetime.now().isoformat()
         }
-        
+
         try:
             response = requests.post(
                 HISTORIAL_URL,
                 json=historial_data,
                 headers={"Authorization": f"Bearer {self.token}"}
             )
-            
+
             if response.status_code in (200, 201):
-                QMessageBox.information(
-                    self, "Éxito", "Historial médico registrado correctamente en la base de datos.")
-                # Limpiar los campos después de guardar
+                QMessageBox.information(self, "Éxito", "Historial médico registrado correctamente en la base de datos.")
+                self.doc_input.clear()
+                self.name_display.clear()
                 self.diagnosis_text.clear()
                 self.recommendation_text.clear()
+                self.image_label.clear()
+                self.paciente_id = None
             else:
-                QMessageBox.warning(
-                    self, "Error", f"No se pudo registrar el historial. Error: {response.status_code}\n{response.text}")
-                
+                QMessageBox.warning(self, "Error", f"No se pudo registrar el historial. Error: {response.status_code}\n{response.text}")
+
         except Exception as e:
-            QMessageBox.critical(
-                self, "Error", f"Error al conectar con el servidor:\n{str(e)}")
+            QMessageBox.critical(self, "Error", f"Error al conectar con el servidor:\n{str(e)}")
 
     def open_camera(self):
         cap = cv2.VideoCapture(0)
@@ -188,12 +185,10 @@ class Patient(QWidget):
             if not ret:
                 break
 
-            # Aplicar detección con YOLO
             results = self.yolo_model.predict(frame, verbose=False)
             annotated_frame = results[0].plot()
 
-            cv2.imshow(
-                "Detección con YOLOv8 - 's' para guardar, 'q' para salir", annotated_frame)
+            cv2.imshow("Detección con YOLOv8 - 's' para guardar, 'q' para salir", annotated_frame)
             key = cv2.waitKey(1)
 
             if key == ord('s'):
@@ -209,10 +204,8 @@ class Patient(QWidget):
         cv2.destroyAllWindows()
 
     def upload_image(self):
-        file_path, _ = QFileDialog.getOpenFileName(
-            self, "Seleccionar Imagen", "", "Imágenes (*.png *.jpg *.jpeg)")
+        file_path, _ = QFileDialog.getOpenFileName(self, "Seleccionar Imagen", "", "Imágenes (*.png *.jpg *.jpeg)")
         if file_path:
-            # Aplicar detección con YOLO
             results = self.yolo_model.predict(file_path, verbose=False)
             annotated_img = results[0].plot()
 
@@ -225,8 +218,7 @@ class Patient(QWidget):
     def save_image_to_local_db(self, image_path):
         doc = self.doc_input.text().strip()
         if not doc:
-            QMessageBox.warning(
-                self, "Error", "Ingrese un documento antes de subir la imagen.")
+            QMessageBox.warning(self, "Error", "Ingrese un documento antes de subir la imagen.")
             return
 
         if doc in pacientes_db:
@@ -234,17 +226,9 @@ class Patient(QWidget):
         else:
             pacientes_db[doc] = {"imagen": image_path}
 
-        QMessageBox.information(
-            self, "Éxito", "Imagen guardada correctamente.")
+        QMessageBox.information(self, "Éxito", "Imagen guardada correctamente.")
 
     def display_image(self, path):
         pixmap = QPixmap(path)
-        scaled_pixmap = pixmap.scaled(
-            self.image_label.width(), self.image_label.height(), Qt.AspectRatioMode.KeepAspectRatio)
+        scaled_pixmap = pixmap.scaled(self.image_label.width(), self.image_label.height(), Qt.AspectRatioMode.KeepAspectRatio)
         self.image_label.setPixmap(scaled_pixmap)
-
-    def load_styles(self, filename):
-        file = QFile(filename)
-        if file.open(QFile.OpenModeFlag.ReadOnly | QFile.OpenModeFlag.Text):
-            stream = QTextStream(file)
-            self.setStyleSheet(stream.readAll())
