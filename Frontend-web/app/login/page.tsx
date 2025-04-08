@@ -1,76 +1,80 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import styles from '../style.module.css';
-import AlertPopup from '../components/alertPopup';
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import styles from "../style.module.css";
+import AlertPopup from "../components/alertPopup";
 
 export default function LoginPage() {
   const router = useRouter();
 
-  const [user, setUser] = useState('');
-  const [password, setPassword] = useState('');
-  const [alert, setAlert] = useState<{ message: string; type?: 'success' | 'error' } | null>(null);
-
+  const [user, setUser] = useState("");
+  const [password, setPassword] = useState("");
+  const [alert, setAlert] = useState<{
+    message: string;
+    type?: "success" | "error";
+  } | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       const formData = new URLSearchParams();
-      formData.append('username', user);
-      formData.append('password', password);
+      formData.append("username", user);
+      formData.append("password", password);
 
-      const res = await fetch('http://localhost:8000/login', {
-        method: 'POST',
+      const res = await fetch("http://localhost:8000/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "application/x-www-form-urlencoded",
         },
         body: formData.toString(),
       });
 
       if (!res.ok) {
         const errData = await res.json();
-        throw new Error(errData.detail || 'Credenciales incorrectas');
+        throw new Error(errData.detail || "Credenciales incorrectas");
       }
 
       const data = await res.json();
       const token = data.access_token;
-      console.log('Token recibido:', token);
+      console.log("Token recibido:", token);
 
       // Guardar el token en localStorage
-      localStorage.setItem('token', token);
+      localStorage.setItem("token", token);
 
       // Obtener los datos del usuario
-      const userRes = await fetch('http://localhost:8000/usuario', {
-        method: 'GET',
+      const userRes = await fetch("http://localhost:8000/usuario", {
+        method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
       if (!userRes.ok) {
-        throw new Error('No se pudo obtener la información del usuario');
+        throw new Error("No se pudo obtener la información del usuario");
       }
 
       const userData = await userRes.json();
-      console.log('Usuario logueado:', userData);
+      console.log("Usuario logueado:", userData);
 
       // Guardar el ID del usuario en localStorage
-      localStorage.setItem('user_id', userData.id);
-      localStorage.setItem('user_name', userData.nombre)
+      localStorage.setItem("user_id", userData.id);
+      localStorage.setItem("user_name", userData.nombre);
 
-      setAlert({ message: 'Inicio de sesión exitoso', type: 'success' });
+      setAlert({ message: "Inicio de sesión exitoso", type: "success" });
 
       setTimeout(() => {
         setAlert(null);
-        router.push('/dashboard');
+        router.push("/dashboard");
       }, 2000);
     } catch (err: any) {
-  
-      setAlert({ message: 'Error al iniciar sesión: ' + err.message, type: 'error' });
-  
+      setAlert({
+        message: "Error al iniciar sesión: " + err.message,
+        type: "error",
+      });
+
       setTimeout(() => setAlert(null), 3000);
     }
   };
@@ -80,34 +84,50 @@ export default function LoginPage() {
       <div className={styles["login-overlay"]}></div>
       <div className={styles["login-container"]}>
         <h2>Iniciar sesión</h2>
-        <p>Ingresa tu <b>usuario</b> y <b>contraseña</b> para poder ingresar al sistema</p>
+        <p>
+          Ingresa tu <b>usuario</b> y <b>contraseña</b> para poder ingresar al
+          sistema
+        </p>
         <form onSubmit={handleLogin}>
-          <div className={styles['container-label']}>
-            <label className={styles['login-subtitles']}>Usuario:</label><br />
+          <div className={styles["container-label"]}>
+            <label className={styles["login-subtitles"]}>Usuario:</label>
+            <br />
             <input
-              className={styles['login-subtitles']}
+              className={styles["login-subtitles"]}
               type="text"
               value={user}
-              onChange={e => setUser(e.target.value)}
+              onChange={(e) => setUser(e.target.value)}
               required
             />
           </div>
-          <div className={styles['container-label']}>
-            <label className={styles['login-subtitles']}>Contraseña:</label><br />
+          <div className={styles["container-label"]}>
+            <label className={styles["login-subtitles"]}>Contraseña:</label>
+            <br />
             <input
-              className={styles['login-subtitles']}
+              className={styles["login-subtitles"]}
               type="password"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
           <button type="submit">Iniciar sesión</button>
         </form>
-        <p style={{ marginTop: '1rem' }}>
-          ¿No tienes cuenta? <Link href="/registration"><b>Regístrate</b></Link>
+        <p style={{ marginTop: "1rem" }}>
+          ¿No tienes cuenta?{" "}
+          <Link href="/registration">
+            <b>Regístrate</b>
+          </Link>
         </p>
       </div>
+
+      {alert && (
+        <AlertPopup
+          message={alert.message}
+          type={alert.type}
+          onClose={() => setAlert(null)}
+        />
+      )}
     </div>
   );
 }
